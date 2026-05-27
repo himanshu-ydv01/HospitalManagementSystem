@@ -43,7 +43,7 @@ public class AppointmentService {
         }
     }
 
-    public Appointment updateAppointmentById(Long id) {
+    public Appointment updateAppointmentById(Long id, Appointment appointment) {
         try {
             return null;
         }catch (Exception e){

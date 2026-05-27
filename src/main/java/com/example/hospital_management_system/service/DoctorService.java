@@ -43,7 +43,7 @@ public class DoctorService {
         }
     }
 
-    public Doctor updateDoctorById(Long id) {
+    public Doctor updateDoctorById(Long id, Doctor doctor) {
         try {
             return null;
         }catch (Exception e){

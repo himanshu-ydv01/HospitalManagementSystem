@@ -33,8 +33,8 @@ public class DoctorController {
     }
 
     @PutMapping("/{id}")
-    public void updateDoctorById(@PathVariable Long id) {
-        doctorService.updateDoctorById(id);
+    public void updateDoctorById(@PathVariable Long id, @RequestBody Doctor doctor) {
+        doctorService.updateDoctorById(id,doctor);
     }
 
     @DeleteMapping("/{id}")

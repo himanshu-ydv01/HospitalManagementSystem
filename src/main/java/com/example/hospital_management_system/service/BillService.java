@@ -43,7 +43,7 @@ public class BillService {
         }
     }
 
-    public Bill updateBillById(Long id) {
+    public Bill updateBillById(Long id, Bill bill) {
         try {
             return null;
         }catch (Exception e){
