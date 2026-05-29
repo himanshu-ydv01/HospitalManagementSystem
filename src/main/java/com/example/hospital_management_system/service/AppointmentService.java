@@ -1,16 +1,23 @@
 package com.example.hospital_management_system.service;
 
 import com.example.hospital_management_system.models.Appointment;
+import com.example.hospital_management_system.models.Doctor;
+import com.example.hospital_management_system.repository.AppointmentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AppointmentService {
 
     private static final Logger logger = LoggerFactory.getLogger(AppointmentService.class);
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     public List<Appointment> GetAllAppointments() {
         try{
@@ -25,7 +32,8 @@ public class AppointmentService {
 
     public Appointment getAppointmentById(Long id) {
         try {
-            return null;
+            Optional<Appointment> appointment = appointmentRepository.findById(id);
+            return appointment.orElse(null);
         }catch (Exception e){
             System.out.println("Error message" + e.getMessage());
             logger.error("Error while getting appointment by id: {} ", e.getMessage() );
@@ -35,7 +43,8 @@ public class AppointmentService {
 
     public Appointment addAppointment(Appointment appointment) {
         try {
-            return null;
+            appointmentRepository.save(appointment);
+            return appointment;
         }catch (Exception e){
             System.out.println("Error message" + e.getMessage());
             logger.error("Error while adding appointment: {} ", e.getMessage() );
@@ -43,9 +52,21 @@ public class AppointmentService {
         }
     }
 
-    public Appointment updateAppointmentById(Long id, Appointment appointment) {
+    public Appointment updateAppointmentById(Long id, Appointment updatedAppointment) {
         try {
-            return null;
+            Optional<Appointment> existingAppointment = appointmentRepository.findById(id);
+            if(existingAppointment.isPresent()) {
+                Appointment a = existingAppointment.get();
+                a.setPatientId(updatedAppointment.getPatientId());
+                a.setDoctorId(updatedAppointment.getDoctorId());
+                a.setDate(updatedAppointment.getDate());
+                appointmentRepository.save(a);
+
+                return updatedAppointment;
+            }else{
+                logger.error("Appointment not  found with id {}",id);
+                return null;
+            }
         }catch (Exception e){
             System.out.println("Error message" + e.getMessage());
             logger.error("Error while updating appointment by id: {} ", e.getMessage() );
@@ -55,7 +76,8 @@ public class AppointmentService {
 
     public void deleteAppointmentById(Long id) {
         try {
-
+            logger.info("Bill deleted with id {}",id);
+            appointmentRepository.deleteById(id);
         }catch (Exception e){
             System.out.println("Error message" + e.getMessage());
             logger.error("Error while deleting appointment by id: {} ", e.getMessage() );
