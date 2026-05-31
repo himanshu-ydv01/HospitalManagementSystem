@@ -6,6 +6,9 @@ import com.example.hospital_management_system.repository.DoctorRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,10 +21,11 @@ public class DoctorService {
     @Autowired
     private DoctorRepository doctorRepository;
 
-    public List<Doctor> getAllDoctors() {
+    public Page<Doctor> getAllDoctors(int page, int size) {
         try{
             System.out.println( "GetAllDoctors Service layer" );
-            return doctorRepository.findAll();
+            Pageable pageable = PageRequest.of(page, size);
+            return doctorRepository.findAll(pageable);
         } catch (Exception e) {
             System.out.println( "Error message: " + e.getMessage() );
             logger.error( "Error while getting all doctors: {}", e.getMessage() );

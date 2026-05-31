@@ -4,6 +4,7 @@ package com.example.hospital_management_system.controllers;
 import com.example.hospital_management_system.models.Appointment;
 import com.example.hospital_management_system.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +17,9 @@ public class AppointmentController {
     private AppointmentService appointmentService;
 
     @GetMapping
-    public List<Appointment> getAllAppointments() {
+    public Page<Appointment> getAllAppointments(int page,int size) {
         System.out.println("Getting all appointments");
-        return appointmentService.GetAllAppointments();
+        return appointmentService.getAllAppointments(page, size);
     }
 
     @PostMapping
@@ -28,7 +29,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/{id}")
-    public Appointment getAppointmentById(@RequestParam Long id) {
+    public Appointment getAppointmentById(@PathVariable Long id) {
         System.out.println("Getting appointment by ID");
         return appointmentService.getAppointmentById(id);
     }

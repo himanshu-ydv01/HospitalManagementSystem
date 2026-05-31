@@ -6,6 +6,9 @@ import com.example.hospital_management_system.repository.BillRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,10 +22,11 @@ public class BillService {
     @Autowired
     private BillRepository billRepository;
 
-    public List<Bill> GetAllBills() {
+    public Page<Bill> GetAllBills(int page,int size) {
         try{
             System.out.println( "GetAllBills Service layer" );
-            return billRepository.findAll();
+            Pageable pageable = PageRequest.of(page,size);
+            return billRepository.findAll(pageable);
         } catch (Exception e) {
             System.out.println( "Error message: " + e.getMessage() );
             logger.error("Error while getting all bills: {} ", e.getMessage() );
